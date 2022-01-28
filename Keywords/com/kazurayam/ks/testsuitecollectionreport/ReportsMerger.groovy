@@ -7,48 +7,84 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.stream.Collectors
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.parsers.DocumentBuilder
+import org.w3c.dom.Document
 
 import com.kms.katalon.core.configuration.RunConfiguration
 
 public class ReportsMerger {
 
-	static final Path projectDir = Paths.get(RunConfiguration.getProjectDir())
-
-	public ReportsMerger() {
-		Path reportsDir = projectDir.resolve("Reports")
-		Path latestBunchDir = findLatestBunchDir(reportsDir)
+	private static final Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+	private static DocumentBuilder xmlParser
+	
+	static {
+		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance()
+		xmlParser = dbfactory.newDocumentBuilder()
 	}
 
-	public static Optional<Path> findLatestBunchDir(Path reportsDir) {
-		List<Path> dirs =
-				Files.list(reportsDir)
-				.filter({ p ->
-					Files.isDirectory(p)
-				})
-				.filter({ p ->
-					p.getFileName().toString().matches("\\d[6]_\\d[6]")
-				})
-				.filter({ p ->
-					findReportCollectionEntity(p).size() > 0
-				})
-				//.sorted(Comparator.comparing({ p1, p2 -> Path::getFileName, Comparator.reverseOrder()))
-				.collect(Collectors.toList())
+	public ReportsMerger() {}
+
+	public execute() {
+		Path reportsDir = projectDir.resolve("Reports")
+		Path latestRCE = findLatestReportCollectionEntity(reportsDir)
+		List<Path> xmlReports = findXmlReports(latestRCE)
+	}
+
+	public static Optional<Path> findLatestReportCollectionEntity(Path reportsDir) {
+		List<Path> dirs = findReportCollectionEntities(reportsDir)
 		if (dirs.size() > 0) {
-			return Optional.of(dirs.get(0))
+			Path p = dirs.stream()
+					.sorted(Comparator.reverseOrder())
+					.collect(Collectors.toList())
+					.get(0)
+			return Optional.of(p)
 		} else {
 			return Optional.empty()
 		}
 	}
 
-	public static List<Path> findReportCollectionEntity(Path base) {
-		ReportCollectionEntityFileFinder finder = new ReportCollectionEntityFileFinder()
+	public static List<Path> findReportCollectionEntities(Path base) {
+		Pattern pattern = Pattern.compile(".+\\.rp\$")
+		FileFinder finder = new FileFinder(pattern)
 		Files.walkFileTree(base, finder)
-		return finder.getFound()
+		return finder.getResult()
 	}
 
-	public void compile(String path) {
-		Path outfile = resolveOutfile(path)
+	public static List<Path> findXmlReports(Path latestRCE) {
+		Path tscDir = latestRCE.getParent().getParent().getParent()
+		assert Files.exists(tscDir)
+		Pattern pattern = Pattern.compile("JUnit_Report\\.xml")
+		FileFinder finder = new FileFinder(pattern)
+		Files.walkFileTree(tscDir, finder)
+		return finder.getResult()
 	}
+
+	public static List<Document> loadXmlDocuments(List<Path> xmlFiles) {
+		List<Document> docs = new ArrayList<>()
+		xmlFiles.each { p ->
+			FileInputStream fis = new FileInputStream(p.toFile())
+			Document doc = xmlParser.parse(fis)
+			docs.add(doc)
+		}
+		return docs
+	}
+
+	/**
+	 * returns a List of 
+	 *     Map<String,Object> stat = ["name": "TS1", "time": 3.717, "tests": 1, "failures": 0, "errors": 0]
+	 */
+	public static List<Map> getStats(List<Document> docs) {
+		
+	}
+
+	public static void write(List<Document> docs, Path outFile) {
+		
+	}
+
+
 
 	private Path resolveOutfile(String path) {
 		Path p = Paths.get(path)
@@ -61,16 +97,16 @@ public class ReportsMerger {
 
 
 	/**
-	 * 
-	 * @author kazuakiurayama
-	 *
-	 */
-	public static class ReportCollectionEntityFileFinder implements FileVisitor<Path> {
+	*
+	*/
+	public static class FileFinder implements FileVisitor<Path> {
 
-		List<Path> found
+		private final Pattern pattern
+		private final List<Path> found
 
-		ReportCollectionEntityFileFinder() {
-			found = new ArrayList<>()
+		FileFinder(Pattern pattern) {
+			this.pattern = pattern
+			this.found = new ArrayList<>()
 		}
 
 		List<Path> getResult() {
@@ -84,7 +120,8 @@ public class ReportsMerger {
 
 		@Override
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-			if (file.getFileName().toString().endsWith(".rp")) {
+			Matcher m = pattern.matcher(file.getFileName().toString())
+			if (m.matches()) {
 				found.add(file)
 			}
 			return FileVisitResult.CONTINUE ;

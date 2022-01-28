@@ -1,0 +1,6 @@
+
+import static com.kazurayam.junit4ks.JUnitCustomKeywords.runWithJUnitRunner
+
+import com.kazurayam.ks.testsuitecollectionreport.ReportsMergerTest
+
+runWithJUnitRunner(ReportsMergerTest.class)

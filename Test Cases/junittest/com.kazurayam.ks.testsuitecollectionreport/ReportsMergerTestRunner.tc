@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ReportCollectionEntityFileFinderTestRunner</name>
+   <name>ReportsMergerTestRunner</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>154b3867-fe6a-48a0-af86-1bc74385f360</testCaseGuid>
+   <testCaseGuid>187be83d-7abb-4415-a5dd-a383a54be847</testCaseGuid>
 </TestCaseEntity>
