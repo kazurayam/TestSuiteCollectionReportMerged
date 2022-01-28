@@ -94,4 +94,20 @@ public class ReportsMergerTest {
 			fail("rp was empty")
 		}
 	}
+	
+	@Test
+	void test_write() {
+		Optional<Path> rp = ReportsMerger.findLatestReportCollectionEntity(reportsDir)
+		if (rp.isPresent()) {
+			List<Path> xmlReports = ReportsMerger.findXmlReports(rp.get())
+			List<Document> docs = ReportsMerger.loadXmlDocuments(xmlReports)
+			Path outFile = projectDir.resolve("build/tmp/testOutput/ReportsMergerTest/JUnit_Report.merged.xml")
+			ReportsMerger.write(docs, outFile)
+			assert Files.exists(outFile)
+			assert outFile.size() > 0
+		} else {
+			fail("rp was empty")
+		}
+	}
+	
 }
