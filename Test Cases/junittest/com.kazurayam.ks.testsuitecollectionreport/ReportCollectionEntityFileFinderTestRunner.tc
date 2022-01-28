@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>runTSCReportMerger</name>
+   <name>ReportCollectionEntityFileFinderTestRunner</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>c744c5e8-a17f-43c0-8b37-31209f413909</testCaseGuid>
+   <testCaseGuid>154b3867-fe6a-48a0-af86-1bc74385f360</testCaseGuid>
 </TestCaseEntity>
