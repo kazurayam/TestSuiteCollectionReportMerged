@@ -1,4 +1,4 @@
-package com.kazurayam.ks.testsuitecollectionreport
+package com.kazurayam.ks.reports
 
 import static org.junit.Assert.*
 
@@ -9,7 +9,6 @@ import java.nio.file.Paths
 import org.junit.Before
 import org.junit.Test
 import java.util.regex.Pattern
-import com.kazurayam.ks.testsuitecollectionreport.ReportsMerger.FileFinder
 import com.kms.katalon.core.configuration.RunConfiguration
 
 public class FileFinderTest {

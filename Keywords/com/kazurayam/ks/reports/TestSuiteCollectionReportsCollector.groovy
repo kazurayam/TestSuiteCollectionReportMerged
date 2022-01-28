@@ -1,26 +1,21 @@
-package com.kazurayam.ks.testsuitecollectionreport
+package com.kazurayam.ks.reports
 
-import java.nio.file.FileVisitResult
-import java.nio.file.FileVisitor
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
-import javax.xml.transform.Transformer
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.OutputKeys
-
 
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -28,17 +23,17 @@ import org.w3c.dom.Node
 
 import com.kms.katalon.core.configuration.RunConfiguration
 
-public class ReportsMerger {
+public class TestSuiteCollectionReportsCollector {
 
 	private static final Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 	private static DocumentBuilder xmlParser
-	
+
 	static {
 		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance()
 		xmlParser = dbfactory.newDocumentBuilder()
 	}
 
-	public ReportsMerger() {}
+	public TestSuiteCollectionReportsCollector() {}
 
 	public execute() {
 		Path reportsDir = projectDir.resolve("Reports")
@@ -93,10 +88,10 @@ public class ReportsMerger {
 		XPath xpath =  XPathFactory.newInstance().newXPath()
 		List<Map> stats = new ArrayList<>()
 		for (Document doc in docs) {
-			Node node = 
-				(Node)xpath
+			Node node =
+					(Node)xpath
 					.compile("/testsuites")
-					.evaluate(doc, XPathConstants.NODE) 
+					.evaluate(doc, XPathConstants.NODE)
 			Element testsuites = (Element)node
 			Map m = new HashMap<>()
 			String name = testsuites.getAttribute("name")
@@ -108,7 +103,7 @@ public class ReportsMerger {
 		}
 		return stats
 	}
-	
+
 	public static Map getSum(List<Map> stats) {
 		Double time = 0
 		Integer tests = 0
@@ -123,7 +118,7 @@ public class ReportsMerger {
 		Map sum = ["name": "sum", "time": time, "tests": tests, "failures": failures, "errors": errors ]
 		return sum
 	}
-	
+
 	public static String stringifySum(Map sum) {
 		StringBuilder sb = new StringBuilder()
 		sb.append("time: ")
@@ -166,45 +161,4 @@ public class ReportsMerger {
 	}
 
 
-	/**
-	*
-	*/
-	public static class FileFinder implements FileVisitor<Path> {
-
-		private final Pattern pattern
-		private final List<Path> found
-
-		FileFinder(Pattern pattern) {
-			this.pattern = pattern
-			this.found = new ArrayList<>()
-		}
-
-		List<Path> getResult() {
-			return found
-		}
-
-		@Override
-		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-			return FileVisitResult.CONTINUE ;
-		}
-
-		@Override
-		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-			Matcher m = pattern.matcher(file.getFileName().toString())
-			if (m.matches()) {
-				found.add(file)
-			}
-			return FileVisitResult.CONTINUE ;
-		}
-
-		@Override
-		public FileVisitResult visitFileFailed(Path file, IOException exc) {
-			return FileVisitResult.CONTINUE ;
-		}
-
-		@Override
-		public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
-			return FileVisitResult.CONTINUE ;
-		}
-	}
 }

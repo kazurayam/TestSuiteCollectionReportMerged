@@ -17,4 +17,4 @@ import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
 
-CustomKeywords.'com.kazurayam.ks.testsuitecollectionreport.ReportsMerger.compile'("./out/TestSuiteCollectionReport_merged.xml")
+CustomKeywords.'com.kazurayam.ks.reports.TestSuiteCollectionReportsCollector.compile'("./out/TestSuiteCollectionReport_merged.xml")

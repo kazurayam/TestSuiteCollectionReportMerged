@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCaseEntity>
    <description></description>
-   <name>ReportsMergerTestRunner</name>
+   <name>collectTSCReports</name>
    <tag></tag>
    <comment></comment>
-   <testCaseGuid>187be83d-7abb-4415-a5dd-a383a54be847</testCaseGuid>
+   <testCaseGuid>c744c5e8-a17f-43c0-8b37-31209f413909</testCaseGuid>
 </TestCaseEntity>

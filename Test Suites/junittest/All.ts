@@ -15,12 +15,12 @@
       <guid>861e0539-9c53-4df5-ab92-5f587f0419ab</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.testsuitecollectionreport/ReportsMergerTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.reports/TestSuiteCollectionReportsCollectorTestRunner</testCaseId>
    </testCaseLink>
    <testCaseLink>
       <guid>5c420452-d07c-4d37-a825-9fb2a1946b2d</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/junittest/com.kazurayam.ks.testsuitecollectionreport/FileFinderTestRunner</testCaseId>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.reports/FileFinderTestRunner</testCaseId>
    </testCaseLink>
 </TestSuiteEntity>
