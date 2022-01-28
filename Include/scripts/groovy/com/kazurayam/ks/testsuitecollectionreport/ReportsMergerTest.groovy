@@ -79,4 +79,19 @@ public class ReportsMergerTest {
 			fail("rp was empty")
 		}
 	}
+	
+	@Test
+	void test_getSum() {
+		Optional<Path> rp = ReportsMerger.findLatestReportCollectionEntity(reportsDir)
+		if (rp.isPresent()) {
+			List<Path> xmlReports = ReportsMerger.findXmlReports(rp.get())
+			List<Document> docs = ReportsMerger.loadXmlDocuments(xmlReports)
+			List<Map> stats = ReportsMerger.getStats(docs)
+			Map sum = ReportsMerger.getSum(stats)
+			assert sum != null
+			println ReportsMerger.stringifySum(sum)
+		} else {
+			fail("rp was empty")
+		}
+	}
 }

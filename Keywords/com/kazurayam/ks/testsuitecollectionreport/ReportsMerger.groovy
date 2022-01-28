@@ -15,6 +15,12 @@ import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.xpath.XPath
 import javax.xml.xpath.XPathConstants
 import javax.xml.xpath.XPathFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.OutputKeys
+
 
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -117,9 +123,35 @@ public class ReportsMerger {
 		Map sum = ["name": "sum", "time": time, "tests": tests, "failures": failures, "errors": errors ]
 		return sum
 	}
+	
+	public static String stringifySum(Map sum) {
+		StringBuilder sb = new StringBuilder()
+		sb.append("time: ")
+		sb.append(String.format("%.3f", sum.get("time")))
+		sb.append(", tests: ")
+		sb.append(sum.get("tests"))
+		sb.append(", failures: ")
+		sb.append(sum.get("failures"))
+		sb.append(", errors: ")
+		sb.append(sum.get("errors"))
+		return sb.toString()
+	}
 
 	public static void write(List<Document> docs, Path outFile) {
-		
+		Files.createDirectories(outFile.getParent())
+		Document bunch = xmlParser.newDocument()
+		Element rootElement = bunch.createElement("bunch")
+		for (Document doc in docs) {
+			rootElement.appendChild(doc.getDocumentElement())
+		}
+		DOMSource domSource = new DOMSource(bunch)
+		StreamResult streamResult = new StreamResult(outFile.toFile())
+		TransformerFactory tf = TransformerFactory.newInstance()
+		Transformer tr = tf.newTransformer()
+		tr.setOutputProperty(OutputKeys.METHOD, "xml")
+		tr.setOutputProperty(OutputKeys.INDENT, "yes")
+		tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8")
+		tr.transform(domSource, streamResult)
 	}
 
 
