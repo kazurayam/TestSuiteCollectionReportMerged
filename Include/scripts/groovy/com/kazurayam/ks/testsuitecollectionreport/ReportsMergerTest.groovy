@@ -61,6 +61,22 @@ public class ReportsMergerTest {
 		} else {
 			fail("rp was empty")
 		}
-		
+	}
+	
+	@Test
+	void test_getStats() {
+		Optional<Path> rp = ReportsMerger.findLatestReportCollectionEntity(reportsDir)
+		if (rp.isPresent()) {
+			List<Path> xmlReports = ReportsMerger.findXmlReports(rp.get())
+			List<Document> docs = ReportsMerger.loadXmlDocuments(xmlReports)
+			List<Map> stats = ReportsMerger.getStats(docs)
+			assert stats != null
+			assert stats.size() > 0
+			for (Map m in stats) {
+				println m
+			}
+		} else {
+			fail("rp was empty")
+		}
 	}
 }
