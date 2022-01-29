@@ -1,0 +1,1 @@
+-   <https://kazurayam.github.io/TestSuiteCollectionReportsCollector/images/demo.png>
