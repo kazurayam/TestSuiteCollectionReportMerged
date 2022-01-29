@@ -69,11 +69,11 @@ public class TestSuiteCollectionReportsCollectorTest {
 		if (rp.isPresent()) {
 			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(rp.get())
 			List<Document> docs = TestSuiteCollectionReportsCollector.loadXmlDocuments(xmlReports)
-			List<Map> stats = TestSuiteCollectionReportsCollector.getStats(docs)
+			List<TestSuiteStat> stats = TestSuiteCollectionReportsCollector.getStats(docs)
 			assert stats != null
 			assert stats.size() > 0
-			for (Map m in stats) {
-				println m
+			for (TestSuiteStat stat in stats) {
+				println stat
 			}
 		} else {
 			fail("rp was empty")
@@ -86,14 +86,12 @@ public class TestSuiteCollectionReportsCollectorTest {
 		if (rp.isPresent()) {
 			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(rp.get())
 			List<Document> docs = TestSuiteCollectionReportsCollector.loadXmlDocuments(xmlReports)
-			List<Map> stats = TestSuiteCollectionReportsCollector.getStats(docs)
-			Map sum = TestSuiteCollectionReportsCollector.getSum(stats)
+			List<TestSuiteStat> stats = TestSuiteCollectionReportsCollector.getStats(docs)
+			TestSuiteStat sum = TestSuiteCollectionReportsCollector.calculateSum(stats)
 			assert sum != null
-			println TestSuiteCollectionReportsCollector.stringifySum(sum)
+			println sum.toString()
 		} else {
 			fail("rp was empty")
 		}
 	}
-
-
 }
