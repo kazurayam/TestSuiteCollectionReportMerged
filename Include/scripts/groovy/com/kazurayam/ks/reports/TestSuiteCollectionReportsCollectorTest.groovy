@@ -24,52 +24,15 @@ public class TestSuiteCollectionReportsCollectorTest {
 		assert Files.exists(reportsDir)
 	}
 
-	@Test
-	void test_findReportCollectionEntities() {
-		List<Path> results = TestSuiteCollectionReportsCollector.findReportCollectionEntities(reportsDir)
-		assertTrue(results.size() > 0)
-	}
 
-	@Test
-	void test_findLatestReportCollectionEntity() {
-		Optional<Path> latest = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
-		assertTrue (latest.isPresent())
-	}
 
-	@Test
-	void test_findXMlReports() {
-		Optional<Path> latest = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
-		if (latest.isPresent()) {
-			Path p = latest.get()
-			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(p)
-			assertTrue(xmlReports.size() > 0)
-			assertEquals(2, xmlReports.size())
-			//println xmlReports.get(0).toString()
-			//println xmlReports.get(1).toString()
-		} else {
-			fail("latest ReportCollectionEntity not found")
-		}
-	}
-
-	@Test
-	void test_loadXmlDocuments() {
-		Optional<Path> rp = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
-		if (rp.isPresent()) {
-			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(rp.get())
-			assert xmlReports.size() > 0
-			List<Document> docs = TestSuiteCollectionReportsCollector.loadXmlDocuments(xmlReports)
-			assert docs.size() > 0
-		} else {
-			fail("rp was empty")
-		}
-	}
 
 	@Test
 	void test_getStats() {
-		Optional<Path> rp = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
+		Optional<Path> rp = TestSuiteCollectionReportsUtil.findLatestReportCollectionEntity(reportsDir)
 		if (rp.isPresent()) {
-			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(rp.get())
-			List<Document> docs = TestSuiteCollectionReportsCollector.loadXmlDocuments(xmlReports)
+			List<Path> xmlReports = TestSuiteCollectionReportsUtil.findXmlReports(rp.get())
+			List<Document> docs = TestSuiteCollectionReportsUtil.loadXmlDocuments(xmlReports)
 			List<TestSuiteStat> stats = TestSuiteCollectionReportsCollector.getStats(docs)
 			assert stats != null
 			assert stats.size() > 0
@@ -80,13 +43,13 @@ public class TestSuiteCollectionReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
-
+	
 	@Test
-	void test_getSum() {
-		Optional<Path> rp = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
+	void test_calculateSum() {
+		Optional<Path> rp = TestSuiteCollectionReportsUtil.findLatestReportCollectionEntity(reportsDir)
 		if (rp.isPresent()) {
-			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(rp.get())
-			List<Document> docs = TestSuiteCollectionReportsCollector.loadXmlDocuments(xmlReports)
+			List<Path> xmlReports = TestSuiteCollectionReportsUtil.findXmlReports(rp.get())
+			List<Document> docs = TestSuiteCollectionReportsUtil.loadXmlDocuments(xmlReports)
 			List<TestSuiteStat> stats = TestSuiteCollectionReportsCollector.getStats(docs)
 			TestSuiteStat sum = TestSuiteCollectionReportsCollector.calculateSum(stats)
 			assert sum != null
@@ -95,6 +58,7 @@ public class TestSuiteCollectionReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
+
 
 	// execute() calls WebUI.comment() keyword, it will fail when the junit was called in the commandline,
 	// so will skip this.

@@ -27,12 +27,6 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 public class TestSuiteCollectionReportsCollector {
 
 	private static final Path projectDir = Paths.get(".")
-	private static DocumentBuilder docBuilder
-
-	static {
-		DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance()
-		docBuilder = dbfactory.newDocumentBuilder()
-	}
 
 	public TestSuiteCollectionReportsCollector() {}
 
@@ -48,11 +42,11 @@ public class TestSuiteCollectionReportsCollector {
 	 */
 	@Keyword
 	public Double execute(Path reportsDir = projectDir.resolve("Reports").toAbsolutePath()) {
-		Optional<Path> latestRCE = findLatestReportCollectionEntity(reportsDir)
+		Optional<Path> latestRCE = TestSuiteCollectionReportsUtil.findLatestReportCollectionEntity(reportsDir)
 		Double time = 0.0
 		latestRCE.ifPresent({ it ->
-			List<Path> xmlReports = findXmlReports(it)
-			List<Document> documents = loadXmlDocuments(xmlReports)
+			List<Path> xmlReports = TestSuiteCollectionReportsUtil.findXmlReports(it)
+			List<Document> documents = TestSuiteCollectionReportsUtil.loadXmlDocuments(xmlReports)
 			List<TestSuiteStat> stats = getStats(documents)
 			Collections.sort(stats)
 			for (TestSuiteStat stat in stats) {
@@ -67,52 +61,16 @@ public class TestSuiteCollectionReportsCollector {
 
 	//-----------------------------------------------------------------
 
-	public static Optional<Path> findLatestReportCollectionEntity(Path reportsDir) {
-		List<Path> dirs = findReportCollectionEntities(reportsDir)
-		if (dirs.size() > 0) {
-			Path p = dirs.stream()
-					.sorted(Comparator.reverseOrder())
-					.collect(Collectors.toList())
-					.get(0)
-			return Optional.of(p)
-		} else {
-			return Optional.empty()
-		}
-	}
 
-	public static List<Path> findReportCollectionEntities(Path base) {
-		Pattern pattern = Pattern.compile(".+\\.rp\$")
-		FileFinder finder = new FileFinder(pattern)
-		Files.walkFileTree(base, finder)
-		return finder.getResult()
-	}
 
-	public static List<Path> findXmlReports(Path latestRCE) {
-		Path tscDir = latestRCE.getParent().getParent().getParent()
-		assert Files.exists(tscDir)
-		Pattern pattern = Pattern.compile("JUnit_Report\\.xml")
-		FileFinder finder = new FileFinder(pattern)
-		Files.walkFileTree(tscDir, finder)
-		return finder.getResult()
-	}
 
-	public static List<Document> loadXmlDocuments(List<Path> xmlFiles) {
-		List<Document> docs = new ArrayList<>()
-		xmlFiles.each { p ->
-			FileInputStream fis = new FileInputStream(p.toFile())
-			Document doc = docBuilder.parse(fis)
-			doc.setDocumentURI(p.toFile().toURI().toURL().toExternalForm())
-			docs.add(doc)
-		}
-		return docs
-	}
 
 	/**
 	 * returns a List of TestSuiteStat objects
 	 * 
 	 * e.g ["name": "TS1", "time": 3.717, "tests": 1, "failures": 0, "errors": 0]
 	 */
-	public static List<TestSuiteStat> getStats(List<Document> docs) {
+	static List<TestSuiteStat> getStats(List<Document> docs) {
 		XPath xpath =  XPathFactory.newInstance().newXPath()
 		List<TestSuiteStat> stats = new ArrayList<>()
 		for (Document doc in docs) {
@@ -134,7 +92,8 @@ public class TestSuiteCollectionReportsCollector {
 		return stats
 	}
 
-	public static TestSuiteStat calculateSum(List<TestSuiteStat> stats) {
+
+	static TestSuiteStat calculateSum(List<TestSuiteStat> stats) {
 		Double time = 0
 		Integer tests = 0
 		Integer failures = 0

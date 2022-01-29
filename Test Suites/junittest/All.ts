@@ -24,6 +24,12 @@
       <testCaseId>Test Cases/junittest/com.kazurayam.ks.reports/TestSuiteCollectionReportsCollectorTestRunner</testCaseId>
    </testCaseLink>
    <testCaseLink>
+      <guid>fbde78f4-b392-4083-a4e4-942c150de7cf</guid>
+      <isReuseDriver>false</isReuseDriver>
+      <isRun>true</isRun>
+      <testCaseId>Test Cases/junittest/com.kazurayam.ks.reports/TestSuiteCollectionReportsUtilTestRunner</testCaseId>
+   </testCaseLink>
+   <testCaseLink>
       <guid>26ce491f-10b3-445f-9e4f-45253e1f9628</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
