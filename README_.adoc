@@ -18,7 +18,7 @@ This project was developed using Katalon Studio v8.2.0, but the Custom Keyword s
 
 Katalon Studio provides a feature called "Test Suite Collection". A Test Suite Collection is a collection of multiple Test Suites. You can execute the Test Suites as one batch by executing the Test Suite Collection. 
 
-Let me present an example. I have a Katalon Studio project where I have 2 Test Suites: `TS1` and `TS2`. And I have a Test Suite Collection named `TSC`. When I ran `TSC`, it generated outputs in the `Reports` folder, as follows:
+Let me present an example. I have a Katalon Studio project where I have 2 Test Suites: `TS1` and `TS2`. And I have a Test Suite Collection named `TSC`. When I ran `TSC`, it generated outputs in the `Reports` folder, for example as follows:
 
 ```
 $ cd Reports
@@ -55,11 +55,18 @@ $ tree .
 8 directories, 18 files
 ```
 
-In the `Reports/20220129_104341/TS1/20220129_104343/JUnit_Report.xml` file, you can find that `TS1` took 3.893 seconds.
+In the `Reports/20220129_104341/TS1/20220129_104343/JUnit_Report.xml` file, I found:
+```
+<testsuites name="TS1" time="3.763" tests="1" failures="0" errors="0">
 
-In the `Reports/20220129_104341/TS2/20220129_104345/JUnit_Report.xml` file, you can find that `TS2` took 3.728 seconds.
+```
 
-But you can not find the duration of `TSC` (TS1 + TS2) at all. How can I get it?
+In the `Reports/20220129_104341/TS2/20220129_104345/JUnit_Report.xml` file, I found: 
+```
+<testsuites name="TS2" time="3.782" tests="1" failures="0" errors="0">
+```
+
+But I could not find the sum of TS1 and TS2 duration. I had to manually calculate it. It was a poor experience.
 
 == Solution
 
@@ -67,10 +74,18 @@ I have developed a Custom Keyword. It looks into the `Reports` folder, identify 
 
 image::./docs/images/demo.png[]
 
-This would be useful if a TSC contains many Test Suites and each 
+This would be useful especially when a TSC contains many Test Suites and each Test Suites take long time to finish.
 
 == Description
 
-=== How to enable the Custom Keyword in your project
-
-
+* It is assumed that you already have a Katalon Studio project with a Test Suite Collection.
+* download the the jar file of `TestSuiteCollectionReportsCollector` from the https://github.com/kazurayam/TestSuiteCollectionReportsCollector/releases[Releases] page.
+* locate the jar file into the `Drivers` folder of your project
+* Stop and retart Katalon Studio to let it acknowledge the new jar. Re-open the project.
+* make a Test Case script of any name, that calls the custom keyword. See the sample code.
+[source, groovy]
+----
+include::Scripts/main/executeTSCRCollector/Script1643416781935.groovy[]
+----
+* Execute your Test Suite Collection.
+* After the TSC, run the test case script, which will display the total duration of the TSC.
