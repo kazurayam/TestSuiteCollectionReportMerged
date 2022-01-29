@@ -1,0 +1,1 @@
+# TestSuiteCollection Reports Collector

@@ -26,7 +26,7 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
  */
 public class TestSuiteCollectionReportsCollector {
 
-	private static final Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+	private static final Path projectDir = Paths.get(".")
 	private static DocumentBuilder docBuilder
 
 	static {
@@ -47,19 +47,17 @@ public class TestSuiteCollectionReportsCollector {
 	 * @return total time of a Test Suite Collection execution, in seconds
 	 */
 	@Keyword
-	public Double execute() {
-		Path reportsDir = projectDir.resolve("Reports")
+	public Double execute(Path reportsDir = projectDir.resolve("Reports").toAbsolutePath()) {
 		Optional<Path> latestRCE = findLatestReportCollectionEntity(reportsDir)
 		Double time = 0.0
 		latestRCE.ifPresent({ it ->
 			List<Path> xmlReports = findXmlReports(it)
-			Collections.sort(xmlReports)
-			for (Path p in xmlReports) {
-				Path relative = projectDir.relativize(p)
-				WebUI.comment(relative.toString())
-			}
 			List<Document> documents = loadXmlDocuments(xmlReports)
 			List<TestSuiteStat> stats = getStats(documents)
+			Collections.sort(stats)
+			for (TestSuiteStat stat in stats) {
+				WebUI.comment(stat.toString() + "; " + stat.getXmlReportPathRelativeTo(reportsDir))
+			}
 			TestSuiteStat sum = calculateSum(stats)
 			WebUI.comment(sum.toString())
 			time = sum.getTime()
@@ -103,6 +101,7 @@ public class TestSuiteCollectionReportsCollector {
 		xmlFiles.each { p ->
 			FileInputStream fis = new FileInputStream(p.toFile())
 			Document doc = docBuilder.parse(fis)
+			doc.setDocumentURI(p.toFile().toURI().toURL().toExternalForm())
 			docs.add(doc)
 		}
 		return docs
@@ -127,7 +126,8 @@ public class TestSuiteCollectionReportsCollector {
 					Double.parseDouble(testsuites.getAttribute("time")),
 					Integer.parseInt(testsuites.getAttribute("tests")),
 					Integer.parseInt(testsuites.getAttribute("failures")),
-					Integer.parseInt(testsuites.getAttribute("errors"))
+					Integer.parseInt(testsuites.getAttribute("errors")),
+					doc.getDocumentURI()
 					)
 			stats.add(stat)
 		}

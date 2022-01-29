@@ -94,4 +94,10 @@ public class TestSuiteCollectionReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
+
+	@Test
+	void test_execute() {
+		TestSuiteCollectionReportsCollector collector = new TestSuiteCollectionReportsCollector()
+		collector.execute(reportsDir)
+	}
 }

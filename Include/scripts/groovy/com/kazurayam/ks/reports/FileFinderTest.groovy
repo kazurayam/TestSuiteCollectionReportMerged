@@ -15,12 +15,12 @@ public class FileFinderTest {
 
 	static final Path projectDir = Paths.get(".")
 	private Path reportsDir
-	
+
 	@Before
 	void setup() {
 		reportsDir = projectDir.resolve("Include/fixtures/Reports")
 	}
-	
+
 	@Test
 	void test_find_rp() {
 		Pattern pattern = Pattern.compile(".+\\.rp\$")

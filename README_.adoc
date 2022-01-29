@@ -1,0 +1,76 @@
+= TestSuiteCollection Reports Collector
+@author kazurayam
+@date 29 Jan 2022
+
+This is a Katalon Studio project where I developed a jar file `com.kazurayam.ks.reports.TestSuiteCollectionCollector-x.x.x.jar`.
+
+
+This jar provides a Custom Keyword operational in any Katalon Studio project. It can display the total execution time of a Test Suite Collection executuion in seconds.
+
+
+This Custom Keyword was developed to propose a solution to a question raised in the Katalon User Forum:
+
+- https://forum.katalon.com/t/execution-start-end-date-time-and-duration-of-test-suite-collection/62027[Execution start end date time and duration of test suite collection]
+
+This project was developed using Katalon Studio v8.2.0, but the Custom Keyword should run on any version.
+
+== Problem to solve
+
+Katalon Studio provides a feature called "Test Suite Collection". A Test Suite Collection is a collection of multiple Test Suites. You can execute the Test Suites as one batch by executing the Test Suite Collection. 
+
+Let me present an example. I have a Katalon Studio project where I have 2 Test Suites: `TS1` and `TS2`. And I have a Test Suite Collection named `TSC`. When I ran `TSC`, it generated outputs in the `Reports` folder, as follows:
+
+```
+$ cd Reports
+:~/tmp/TestSuiteCollectionReportsCollector/Reports (master *)
+$ tree .
+.
+├── 20220129_104341
+│   ├── TS1
+│   │   └── 20220129_104343
+│   │       ├── 20220129_104343.csv
+│   │       ├── 20220129_104343.html
+│   │       ├── JUnit_Report.xml
+│   │       ├── execution.properties
+│   │       ├── execution.uuid
+│   │       ├── execution0.log
+│   │       ├── testCaseBinding
+│   │       └── tsc_id.txt
+│   ├── TS2
+│   │   └── 20220129_104345
+│   │       ├── 20220129_104345.csv
+│   │       ├── 20220129_104345.html
+│   │       ├── JUnit_Report.xml
+│   │       ├── execution.properties
+│   │       ├── execution.uuid
+│   │       ├── execution0.log
+│   │       ├── testCaseBinding
+│   │       └── tsc_id.txt
+│   └── TSC
+│       └── 20220129_104341
+│           └── 20220129_104341.rp
+└── Self-healing
+    └── broken-test-objects.json
+
+8 directories, 18 files
+```
+
+In the `Reports/20220129_104341/TS1/20220129_104343/JUnit_Report.xml` file, you can find that `TS1` took 3.893 seconds.
+
+In the `Reports/20220129_104341/TS2/20220129_104345/JUnit_Report.xml` file, you can find that `TS2` took 3.728 seconds.
+
+But you can not find the duration of `TSC` (TS1 + TS2) at all. How can I get it?
+
+== Solution
+
+I have developed a Custom Keyword. It looks into the `Reports` folder, identify the latest Test Suite Execution (TSC for short), find the `JUnitReport.xml` files of the Test Suites executed in the TSC, calculate the duration of the TSC in seconds, display the duration in the console. For example
+
+image::./docs/images/demo.png[]
+
+This would be useful if a TSC contains many Test Suites and each 
+
+== Description
+
+=== How to enable the Custom Keyword in your project
+
+
