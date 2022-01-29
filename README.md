@@ -84,9 +84,14 @@ This would be useful especially when a TSC contains many Test Suites and each Te
 
 <!-- -->
 
-    Double time = CustomKeywords."com.kazurayam.ks.reports.TestSuiteCollectionReportsCollector.execute"()
+    import java.nio.file.Path
+    import java.nio.file.Paths
 
+    Double time = CustomKeywords."com.kazurayam.ks.reports.TestSuiteCollectionReportsCollector.execute"()
     println time + " seconds"
+
+    Path outfile = Paths.get(".").resolve("stats.json")
+    CustomKeywords."com.kazurayam.ks.reports.TestSuiteCollectionReportsCollector.write"(outfile)
 
 -   Execute your Test Suite Collection.
 
