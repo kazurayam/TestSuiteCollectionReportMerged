@@ -58,7 +58,7 @@ public class TestSuiteCollectionReportsUtil {
 		xmlFiles.each { p ->
 			FileInputStream fis = new FileInputStream(p.toFile())
 			Document doc = docBuilder.parse(fis)
-			doc.setDocumentURI(p.toFile().toURI().toURL().toExternalForm())
+			doc.setDocumentURI(p.normalize().toFile().toURI().toURL().toExternalForm())
 			docs.add(doc)
 		}
 		return docs

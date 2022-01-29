@@ -73,6 +73,28 @@ public class TestSuiteStat implements Comparable {
 		return sb.toString()
 	}
 
+	String toJson() {
+		StringBuilder sb = new StringBuilder()
+		sb.append("{")
+		sb.append("\"name\":\"")
+		sb.append(this.getName())
+		sb.append("\",\"time\":")
+		sb.append(String.format("%.3f", this.getTime()))
+		sb.append(",\"tests\":")
+		sb.append(this.getTests())
+		sb.append(",\"failures\":")
+		sb.append(this.getFailures())
+		sb.append(",\"errors\":")
+		sb.append(this.getErrors())
+		if (this.getXmlReportURI() != null) {
+			sb.append(",\"URI\":\"")
+			sb.append(this.getXmlReportURI())
+			sb.append("\"")
+		}
+		sb.append("}")
+		return sb.toString()
+	}
+
 	@Override
 	int compareTo(Object obj) {
 		TestSuiteStat other = (TestSuiteStat)obj

@@ -17,14 +17,14 @@ public class TestSuiteCollectionReportsCollectorTest {
 
 	Path projectDir = Paths.get(".")
 	Path reportsDir
+	Path outputDir
 
 	@Before
 	void setup() {
 		reportsDir = projectDir.resolve("Include/fixtures/Reports").toAbsolutePath()
 		assert Files.exists(reportsDir)
+		outputDir = projectDir.resolve("build/tmp/testOutput/TestSuiteCollectionReprtsCollectorTest")
 	}
-
-
 
 
 	@Test
@@ -43,7 +43,7 @@ public class TestSuiteCollectionReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
-	
+
 	@Test
 	void test_calculateSum() {
 		Optional<Path> rp = TestSuiteCollectionReportsUtil.findLatestReportCollectionEntity(reportsDir)
@@ -67,5 +67,12 @@ public class TestSuiteCollectionReportsCollectorTest {
 	void test_execute() {
 		TestSuiteCollectionReportsCollector collector = new TestSuiteCollectionReportsCollector()
 		collector.execute(reportsDir)
+	}
+	
+	@Test
+	void test_write() {
+		Path outFile = outputDir.resolve("stats.json")
+		TestSuiteCollectionReportsCollector collector = new TestSuiteCollectionReportsCollector()
+		collector.write(outFile, reportsDir)
 	}
 }

@@ -1,0 +1,5 @@
+[
+{"name":"TS1","time":4.357,"tests":1,"failures":0,"errors":0,"URI":"file:/Users/kazuakiurayama/tmp/TestSuiteCollectionReportsCollector/Reports/20220129_210327/TS1/20220129_210329/JUnit_Report.xml"},
+{"name":"TS2","time":3.932,"tests":1,"failures":0,"errors":0,"URI":"file:/Users/kazuakiurayama/tmp/TestSuiteCollectionReportsCollector/Reports/20220129_210327/TS2/20220129_210331/JUnit_Report.xml"},
+{"name":"sum","time":8.289,"tests":2,"failures":0,"errors":0}
+]

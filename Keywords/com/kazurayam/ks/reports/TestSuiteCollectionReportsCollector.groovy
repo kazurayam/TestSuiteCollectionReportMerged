@@ -1,5 +1,6 @@
 package com.kazurayam.ks.reports
 
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -48,6 +49,35 @@ public class TestSuiteCollectionReportsCollector {
 			}
 			TestSuiteStat sum = calculateSum(stats)
 			WebUI.comment(sum.toString())
+			time = sum.getTime()
+		})
+		return time
+	}
+
+	@Keyword
+	public Double write(Path outFile, Path reportsDir = projectDir.resolve("Reports").toAbsolutePath()) {
+		Files.createDirectories(outFile.getParent())
+		File out = outFile.toFile()
+		Optional<Path> latestRCE = TestSuiteCollectionReportsUtil.findLatestReportCollectionEntity(reportsDir)
+		Double time = 0.0
+		latestRCE.ifPresent({ it ->
+			List<Path> xmlReports = TestSuiteCollectionReportsUtil.findXmlReports(it)
+			List<Document> documents = TestSuiteCollectionReportsUtil.loadXmlDocuments(xmlReports)
+			List<TestSuiteStat> stats = getStats(documents)
+			Collections.sort(stats)
+			out.text = "[" + "\n"
+			int count = 0
+			for (TestSuiteStat stat in stats) {
+				if (count > 0) {
+					out.append(",\n")
+				}
+				out.append(stat.toJson())
+				count += 1
+			}
+			TestSuiteStat sum = calculateSum(stats)
+			out.append(",\n")
+			out.append(sum.toJson() + "\n")
+			out.append("]" + "\n")
 			time = sum.getTime()
 		})
 		return time
