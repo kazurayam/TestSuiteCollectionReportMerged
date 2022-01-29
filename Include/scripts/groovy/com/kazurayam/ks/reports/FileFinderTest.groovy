@@ -13,7 +13,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
 
 public class FileFinderTest {
 
-	static final Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+	static final Path projectDir = Paths.get(".")
 	private Path reportsDir
 	
 	@Before

@@ -14,7 +14,7 @@ import com.kms.katalon.core.configuration.RunConfiguration
 
 public class TestSuiteCollectionReportsCollectorTest {
 
-	Path projectDir = Paths.get(RunConfiguration.getProjectDir())
+	Path projectDir = Paths.get(".")
 	Path reportsDir
 
 	@Before

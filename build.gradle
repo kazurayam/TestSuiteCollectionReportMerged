@@ -1,15 +1,13 @@
-// TestClosure/build.gradle
-
-// $ gradle drivers
-
+// TestSuiteCollectionReportsCollector/build.gradle
 
 plugins {
   id 'groovy'
+  //id 'maven-publish'
+  //id 'signing'
 }
 
 group = 'com.kazurayam'
-version = '0.22.1-SNAPSHOT'
-
+version = '0.1.0-SNAPSHOT'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -32,9 +30,26 @@ configurations {
 
 dependencies {
     myconf group: 'com.kazurayam', name: 'junit4ks', version: "${junit4ksVersion}"
+    implementation fileTree(dir: "/Applications/katalon Studio.app/Contents/Eclipse/plugins", include: ['*.jar'])
+    implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
     generateDocs "org.codehaus.groovy:groovy-all:${groovyVersion}"
 }
 
+sourceSets {
+    main {
+      groovy {
+        srcDirs = ['Keywords', 'Libs']
+        excludes = ['CustomKeywords.groovy', "Temp*.groovy"]
+      }
+    }
+    test {
+      groovy {
+        srcDirs = ['Include/scripts/groovy']
+      }
+    }
+}
+
+// $ gradle drivers
 task drivers {
     doFirst {
         delete fileTree("Drivers") {
@@ -55,8 +70,6 @@ task drivers {
         }
     }
 }
-
-
 
 
 def defaultEncoding = 'UTF-8'
@@ -87,3 +100,69 @@ task publishGroovydoc(type: Copy) {
 }
 
 groovydoc.finalizedBy publishGroovydoc
+
+
+task groovydocJar(type: Jar) {
+    archiveClassifier = 'javadoc'
+    from groovydoc
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+/*
+publishing {
+    publications {
+        junit4ks(MavenPublication) {
+            artifact sourcesJar
+            artifact groovydocJar
+            pom {
+                groupId = project.group
+                name = project.rootProject.name
+                description = 'A Katalon Studio plugin that displays the total execution time of the latest Test Suite Collection'
+                url = 'https://kazurayam.github.io/TestSuiteCollectionReportsCollector/'
+                from components.java
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org.licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'kazurayam'
+                        name = 'URAYAMA,kazuaki'
+                        email = 'kazuaki.urayama@gmail.com'
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/kazurayam/${project.rootProject.name}.git"
+                    developerConnection = "scm:git:git@github.com:kazurayam/${project.rootProject.name}.git"
+                    url = "https://github.com/kazurayam/${project.rootProject.name}"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = isReleaseVersion ? releaseRepo: snapshotRepo
+            credentials {
+                username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.junit4ks
+}
+
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
+*/
