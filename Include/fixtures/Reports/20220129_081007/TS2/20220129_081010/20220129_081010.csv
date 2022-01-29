@@ -1,0 +1,6 @@
+Suite/Test/Step Name,Browser,Description,Tag,Start time,End time,Duration,Status
+TS2,,,,2022-01-29 08:10:23,2022-01-29 08:10:26,3.782s,PASSED
+,,,,,,,
+Test Cases/main/TC1,,,,2022-01-29 08:10:23,2022-01-29 08:10:26,3.318s,PASSED
+"comment(""Hello, world."")",,,,2022-01-29 08:10:23,2022-01-29 08:10:23,0.110s,PASSED
+delay(3),,,,2022-01-29 08:10:23,2022-01-29 08:10:26,3.028s,PASSED

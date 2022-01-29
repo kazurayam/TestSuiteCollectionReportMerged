@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="TS1" time="3.763" tests="1" failures="0" errors="0">
+   <testsuite name="TS1" tests="1" failures="0" errors="0" time="3.763" skipped="0" timestamp="2022-01-29 08:10:15" hostname="kazuakiurayama - localhost" id="Test Suites/TS1">
+      <properties>
+         <property name="deviceName" value=""/>
+         <property name="devicePlatform" value=""/>
+         <property name="logFolder" value="/Users/kazuakiurayama/katalon-workspace/TestSuiteCollectionReportsCollector/Reports/20220129_081007/TS1/20220129_081008"/>
+         <property name="logFiles" value="/Users/kazuakiurayama/katalon-workspace/TestSuiteCollectionReportsCollector/Reports/20220129_081007/TS1/20220129_081008/execution0.log"/>
+         <property name="attachments" value=""/>
+         <property name="hostName" value="kazuakiurayama - localhost"/>
+         <property name="hostAddress" value="127.0.0.1"/>
+         <property name="os" value="Mac OS X 64bit"/>
+         <property name="katalonVersion" value="8.2.1.208"/>
+      </properties>
+      <testcase name="Test Cases/main/TC1" time="3.322" classname="Test Cases/main/TC1" status="PASSED">
+         <system-out><![CDATA[2022-01-29 08:10:16 - [TEST_CASE][PASSED] - Test Cases/main/TC1: Test Cases/main/TC1
+
+2022-01-29 08:10:16 - [TEST_STEP][PASSED] - comment("Hello, world."): Hello, world.
+
+2022-01-29 08:10:16 - [MESSAGE][INFO] - Hello, world.
+
+2022-01-29 08:10:16 - [TEST_STEP][PASSED] - delay(3): Delayed 3 second(s)
+
+2022-01-29 08:10:19 - [MESSAGE][PASSED] - Delayed 3 second(s)]]></system-out>
+         <system-err><![CDATA[]]></system-err>
+      </testcase>
+      <system-out><![CDATA[2022-01-29 08:10:15 - [TEST_SUITE][PASSED] - TS1: Test Cases/main/TC1]]></system-out>
+      <system-err><![CDATA[]]></system-err>
+   </testsuite>
+</testsuites>
