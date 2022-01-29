@@ -1,7 +1,7 @@
 package com.kazurayam.ks.reports
 
 import java.nio.file.Path
-import java.nio.file.Paths
+
 import org.apache.commons.io.FileUtils
 
 /**

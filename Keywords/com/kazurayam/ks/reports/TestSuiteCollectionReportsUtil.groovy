@@ -1,25 +1,15 @@
 package com.kazurayam.ks.reports
 
-
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.regex.Pattern
 import java.util.stream.Collectors
 
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.xpath.XPath
-import javax.xml.xpath.XPathConstants
-import javax.xml.xpath.XPathFactory
 
 import org.w3c.dom.Document
-import org.w3c.dom.Element
-import org.w3c.dom.Node
 
-import com.kms.katalon.core.annotation.Keyword
-import com.kms.katalon.core.configuration.RunConfiguration
-import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 
 public class TestSuiteCollectionReportsUtil {
 
@@ -73,6 +63,4 @@ public class TestSuiteCollectionReportsUtil {
 		}
 		return docs
 	}
-
-	
 }
