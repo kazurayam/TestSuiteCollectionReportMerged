@@ -66,7 +66,7 @@ But I could not find the sum of TS1 and TS2 duration. I had to manually calculat
 
 I have developed a Custom Keyword. It looks into the `Reports` folder, identify the latest Test Suite Execution (TSC for short), find the `JUnitReport.xml` files of the Test Suites executed in the TSC, calculate the duration of the TSC in seconds, display the duration in the console. For example
 
-![demo](./docs/images/demo.png)
+![demo](https://kazurayam.github.io/TestSuiteCollectionReportsCollector/images/demo.png)
 
 This would be useful especially when a TSC contains many Test Suites and each Test Suites take long time to finish.
 
