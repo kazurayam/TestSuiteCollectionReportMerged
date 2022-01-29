@@ -132,23 +132,6 @@ public class TestSuiteCollectionReportsCollector {
 		return sb.toString()
 	}
 
-	public static void write(List<Document> docs, Path outFile) {
-		Files.createDirectories(outFile.getParent())
-		Document bunch = xmlParser.newDocument()
-		Element rootElement = bunch.createElement("bunch")
-		for (Document doc in docs) {
-			rootElement.appendChild(doc.getDocumentElement())
-		}
-		DOMSource domSource = new DOMSource(bunch)
-		StreamResult streamResult = new StreamResult(outFile.toFile())
-		TransformerFactory tf = TransformerFactory.newInstance()
-		Transformer tr = tf.newTransformer()
-		tr.setOutputProperty(OutputKeys.METHOD, "xml")
-		tr.setOutputProperty(OutputKeys.INDENT, "yes")
-		tr.setOutputProperty(OutputKeys.ENCODING, "UTF-8")
-		tr.transform(domSource, streamResult)
-	}
-
 
 
 	private Path resolveOutfile(String path) {
@@ -159,6 +142,4 @@ public class TestSuiteCollectionReportsCollector {
 		Files.createDirectories(p.getParent())
 		return p
 	}
-
-
 }

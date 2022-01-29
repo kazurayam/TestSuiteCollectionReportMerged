@@ -12,7 +12,7 @@ import org.w3c.dom.Document
 
 import com.kms.katalon.core.configuration.RunConfiguration
 
-public class TestSuiteCollectionsReportsCollectorTest {
+public class TestSuiteCollectionReportsCollectorTest {
 
 	Path projectDir = Paths.get(RunConfiguration.getProjectDir())
 	Path reportsDir
@@ -62,7 +62,7 @@ public class TestSuiteCollectionsReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
-	
+
 	@Test
 	void test_getStats() {
 		Optional<Path> rp = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
@@ -79,7 +79,7 @@ public class TestSuiteCollectionsReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
-	
+
 	@Test
 	void test_getSum() {
 		Optional<Path> rp = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
@@ -94,20 +94,6 @@ public class TestSuiteCollectionsReportsCollectorTest {
 			fail("rp was empty")
 		}
 	}
-	
-	@Test
-	void test_write() {
-		Optional<Path> rp = TestSuiteCollectionReportsCollector.findLatestReportCollectionEntity(reportsDir)
-		if (rp.isPresent()) {
-			List<Path> xmlReports = TestSuiteCollectionReportsCollector.findXmlReports(rp.get())
-			List<Document> docs = TestSuiteCollectionReportsCollector.loadXmlDocuments(xmlReports)
-			Path outFile = projectDir.resolve("build/tmp/testOutput/ReportsMergerTest/JUnit_Report.merged.xml")
-			TestSuiteCollectionReportsCollector.write(docs, outFile)
-			assert Files.exists(outFile)
-			assert outFile.size() > 0
-		} else {
-			fail("rp was empty")
-		}
-	}
-	
+
+
 }
