@@ -11,7 +11,7 @@ This Custom Keyword was developed to propose a solution to a question raised in 
 
 -   [Execution start end date time and duration of test suite collection](https://forum.katalon.com/t/execution-start-end-date-time-and-duration-of-test-suite-collection/62027)
 
-This project was developed using Katalon Studio v8.2.0, but the Custom Keyword should run on any version.
+This project was developed using Katalon Studio v8.2.1. I haven’t tested other versions. But the Custom Keyword would run on recent version since v8.x, maybe on v7.x as well.
 
 ## Problem to solve
 
